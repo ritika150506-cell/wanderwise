@@ -29,5 +29,4 @@ https://ritika150506-cell.github.io/wanderwise/
 **Ritika Anil Kumar Gharage**
 B.E. Information Science and Engineering, Atria Institute of Technology, Bengaluru
 
-## Note on AI assistance
-The initial version of this project was generated with Claude (Anthropic's AI assistant). I'm using it to learn how the app works, and I'm extending and modifying it myself.
+
