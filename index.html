@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WanderWise — Travel, Wisely</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --sky:#BFE3F0;
+  --peach:#FFD9C4;
+  --sage:#CFE8D4;
+  --lavender:#E3D5F2;
+  --coral:#FF9376;
+  --ink:#3A3142;
+  --ink-soft:#6E6478;
+  --cream:#FBF8F3;
+  --card:#FFFFFF;
+  --line:#ECE4F0;
+  --gold:#E8B23C;
+  --radius:18px;
+  --shadow: 0 8px 30px rgba(85,60,110,0.08);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);}
+h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:600;margin:0;color:var(--ink);}
+button{font-family:'Inter',sans-serif;cursor:pointer;}
+input,select,textarea{font-family:'Inter',sans-serif;}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-thumb{background:var(--lavender);border-radius:10px;}
+
+a{color:inherit;}
+.app{min-height:100vh;display:flex;flex-direction:column;}
+
+/* ---------- TOPNAV ---------- */
+.topnav{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:22px;font-weight:700;letter-spacing:-0.5px;cursor:pointer;}
+.brand .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--sky),var(--lavender));display:flex;align-items:center;justify-content:center;font-size:18px;}
+.navlinks{display:flex;gap:6px;align-items:center;}
+.navlinks button{background:transparent;border:none;padding:9px 16px;border-radius:999px;font-size:14.5px;font-weight:600;color:var(--ink-soft);transition:.2s;}
+.navlinks button.active, .navlinks button:hover{background:var(--lavender);color:var(--ink);}
+.navuser{display:flex;align-items:center;gap:10px;}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--gold));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;}
+.btn{border:none;border-radius:999px;padding:11px 22px;font-weight:700;font-size:14.5px;transition:.15s;}
+.btn-primary{background:var(--coral);color:#fff;box-shadow:0 6px 18px rgba(255,147,118,.35);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(255,147,118,.45);}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink);}
+.btn-ghost:hover{background:var(--lavender);}
+.btn-sm{padding:7px 14px;font-size:13px;}
+
+/* ---------- LAYOUT ---------- */
+.page{flex:1;width:100%;}
+.wrap{max-width:1180px;margin:0 auto;padding:36px 28px 80px;}
+.center-wrap{max-width:440px;margin:0 auto;padding:60px 24px;}
+
+/* ---------- AUTH ---------- */
+.auth-shell{min-height:100vh;display:flex;}
+.auth-art{flex:1;background:linear-gradient(160deg,var(--sky),var(--lavender) 60%, var(--peach));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.auth-art::before, .auth-art::after{content:'';position:absolute;border-radius:50%;}
+.auth-art::before{width:280px;height:280px;background:rgba(255,255,255,.35);top:-60px;left:-60px;}
+.auth-art::after{width:200px;height:200px;background:rgba(255,255,255,.25);bottom:-40px;right:-20px;}
+.auth-art .quote{position:relative;z-index:2;max-width:380px;padding:40px;color:#3A3142;}
+.auth-art .quote h2{font-size:30px;line-height:1.25;margin-bottom:14px;}
+.auth-art .quote p{font-size:15px;color:#564B61;}
+.auth-form-side{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;}
+.auth-card{width:100%;max-width:380px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;}
+.field input{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);font-size:14.5px;background:#fff;outline:none;transition:.15s;}
+.field input:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(255,147,118,.15);}
+.auth-link{color:var(--coral);font-weight:600;text-decoration:none;cursor:pointer;}
+.helper{font-size:13.5px;color:var(--ink-soft);margin-top:18px;text-align:center;}
+.error-msg{background:#FFE9E3;color:#C1492A;padding:10px 14px;border-radius:10px;font-size:13.5px;margin-bottom:14px;}
+.success-msg{background:#E1F2E4;color:#2E7D4F;padding:10px 14px;border-radius:10px;font-size:13.5px;margin-bottom:14px;}
+
+/* ---------- HERO / HOME ---------- */
+.hero{background:linear-gradient(135deg,var(--sky) 0%, var(--lavender) 50%, var(--peach) 100%);border-radius:28px;padding:56px 44px;margin-bottom:40px;position:relative;overflow:hidden;}
+.hero h1{font-size:40px;line-height:1.15;max-width:600px;}
+.hero p{font-size:16px;color:#564B61;margin-top:14px;max-width:520px;}
+.search-bar{margin-top:28px;display:flex;gap:10px;background:#fff;padding:8px;border-radius:16px;box-shadow:var(--shadow);max-width:560px;}
+.search-bar input{flex:1;border:none;outline:none;padding:12px 14px;font-size:15px;border-radius:10px;}
+.search-bar button{background:var(--ink);color:#fff;border:none;border-radius:10px;padding:0 22px;font-weight:700;font-size:14px;}
+.chips{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;}
+.chip{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.8);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;}
+.chip:hover{background:#fff;}
+
+.section-title{font-size:22px;margin:36px 0 18px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;}
+.dest-card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:.2s;border:1px solid var(--line);}
+.dest-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(85,60,110,.14);}
+.dest-card .img{height:130px;display:flex;align-items:center;justify-content:center;font-size:44px;}
+.dest-card .body{padding:16px;}
+.dest-card .body h4{font-size:16.5px;}
+.dest-card .body .tag{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+.badge{display:inline-block;background:var(--sage);color:#2E6B41;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;margin-top:8px;}
+
+/* ---------- DESTINATION PAGE ---------- */
+.dest-hero{border-radius:24px;padding:42px;background:linear-gradient(135deg,var(--peach),var(--sky));margin-bottom:28px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;}
+.dest-hero .icon{font-size:60px;}
+.dest-hero h1{font-size:36px;}
+.dest-hero .meta{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap;}
+.dest-hero .meta span{font-size:13.5px;font-weight:600;background:rgba(255,255,255,.65);padding:6px 12px;border-radius:999px;}
+.tabbar{display:flex;gap:6px;margin-bottom:22px;border-bottom:1.5px solid var(--line);overflow-x:auto;}
+.tabbar button{background:none;border:none;padding:12px 18px;font-weight:700;font-size:14px;color:var(--ink-soft);border-bottom:3px solid transparent;white-space:nowrap;}
+.tabbar button.active{color:var(--coral);border-color:var(--coral);}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
+.two-col{display:grid;grid-template-columns:1.3fr 1fr;gap:22px;}
+@media(max-width:860px){.two-col{grid-template-columns:1fr;}.auth-shell{flex-direction:column;}.auth-art{min-height:220px;}}
+
+.list-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);}
+.list-item:last-child{border-bottom:none;}
+.list-item .ic{width:42px;height:42px;border-radius:12px;background:var(--lavender);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.list-item h4{font-size:15px;margin-bottom:3px;}
+.list-item p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.5;}
+.price-tag{font-size:12.5px;font-weight:700;color:var(--gold);margin-left:auto;white-space:nowrap;}
+
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.pill{background:var(--sage);color:#2E6B41;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;}
+.pill.peach{background:var(--peach);color:#A35A2A;}
+.pill.sky{background:var(--sky);color:#21617A;}
+.pill.lav{background:var(--lavender);color:#5C3D8A;}
+
+/* ---------- BUDGET PLANNER ---------- */
+.budget-form{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.budget-form .field{margin-bottom:0;}
+.bar-row{margin-bottom:14px;}
+.bar-row .lbl{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+.bar-track{height:10px;background:var(--line);border-radius:999px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:999px;}
+
+/* ---------- JOURNAL ---------- */
+.journal-entry{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow);}
+.journal-entry .top{display:flex;justify-content:space-between;align-items:flex-start;}
+.journal-entry .date{font-size:12.5px;color:var(--ink-soft);font-weight:600;}
+.journal-photos{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.journal-photos img{width:90px;height:90px;object-fit:cover;border-radius:12px;}
+textarea.field-input{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px;resize:vertical;min-height:90px;outline:none;}
+textarea.field-input:focus{border-color:var(--coral);}
+
+/* ---------- PROFILE ---------- */
+.profile-head{display:flex;gap:22px;align-items:center;margin-bottom:30px;}
+.profile-avatar{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--gold));display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:700;}
+.stat-row{display:flex;gap:14px;margin-top:10px;}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;text-align:center;min-width:90px;}
+.stat .n{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--coral);}
+.stat .l{font-size:11.5px;color:var(--ink-soft);font-weight:600;}
+
+.empty{text-align:center;padding:50px 20px;color:var(--ink-soft);}
+.empty .e-icon{font-size:42px;margin-bottom:10px;}
+
+.weather-strip{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;}
+.wcard{flex-shrink:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-width:88px;}
+.wcard .m{font-size:11.5px;color:var(--ink-soft);font-weight:700;}
+.wcard .ic{font-size:22px;margin:6px 0;}
+.wcard .t{font-size:13px;font-weight:700;}
+
+footer{text-align:center;padding:26px;color:var(--ink-soft);font-size:12.5px;}
+
+/* ---------- SPLASH ---------- */
+.splash{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(150deg,var(--sky) 0%, var(--lavender) 55%, var(--peach) 100%);animation:fadeOutSplash .6s ease forwards;animation-delay:1.9s;}
+.splash .mark{width:96px;height:96px;border-radius:26px;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-size:48px;animation:popIn .7s cubic-bezier(.34,1.56,.64,1) both;box-shadow:0 14px 40px rgba(85,60,110,.18);}
+.splash h1{font-family:'Fraunces',serif;font-size:38px;margin-top:20px;color:var(--ink);opacity:0;animation:riseIn .6s ease forwards;animation-delay:.35s;letter-spacing:-.5px;}
+.splash p{font-size:14.5px;color:#564B61;margin-top:8px;opacity:0;animation:riseIn .6s ease forwards;animation-delay:.55s;}
+.splash .dots{display:flex;gap:7px;margin-top:26px;opacity:0;animation:riseIn .6s ease forwards;animation-delay:.75s;}
+.splash .dots span{width:8px;height:8px;border-radius:50%;background:var(--coral);animation:bounceDot 1s infinite ease-in-out;}
+.splash .dots span:nth-child(2){animation-delay:.15s;}
+.splash .dots span:nth-child(3){animation-delay:.3s;}
+@keyframes popIn{0%{transform:scale(.4) rotate(-8deg);opacity:0;}100%{transform:scale(1) rotate(0);opacity:1;}}
+@keyframes riseIn{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+@keyframes bounceDot{0%,80%,100%{transform:translateY(0);opacity:.5;}40%{transform:translateY(-8px);opacity:1;}}
+@keyframes fadeOutSplash{0%{opacity:1;visibility:visible;}99%{opacity:0;visibility:visible;}100%{opacity:0;visibility:hidden;pointer-events:none;}}
+
+.modal-bg{position:fixed;inset:0;background:rgba(58,49,66,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;}
+.modal{background:#fff;border-radius:20px;padding:28px;max-width:420px;width:100%;}
+</style>
+</head>
+<body>
+<div id="splash" class="splash">
+  <div class="mark">🧭</div>
+  <h1>WanderWise</h1>
+  <p>Travel, wisely.</p>
+  <div class="dots"><span></span><span></span><span></span></div>
+</div>
+<div id="root" class="app"></div>
+
+<script>
+setTimeout(()=>{ const s=document.getElementById('splash'); if(s) s.remove(); }, 2600);
+</script>
+
+
+<script>
+/* ================= DATA LAYER ================= */
+const CITY_DB = {
+  "udupi": {
+    name:"Udupi", region:"Karnataka, India", icon:"🛕", tagline:"Temple town & coastal flavours",
+    bestTime:"October to March", climate:"Tropical coastal", idealDays:"2-3 days",
+    months:[["Jan","☀️","28°C"],["Feb","☀️","29°C"],["Mar","🌤️","31°C"],["Apr","🌤️","33°C"],["May","⛈️","32°C"],["Jun","🌧️","28°C"],["Jul","🌧️","27°C"],["Aug","🌧️","27°C"],["Sep","🌦️","28°C"],["Oct","🌤️","29°C"],["Nov","☀️","28°C"],["Dec","☀️","27°C"]],
+    attractions:[
+      {n:"Sri Krishna Matha", t:"Temple", d:"The iconic 13th-century temple founded by Sri Madhvacharya, famous for its Kanakana Kindi window darshan.", price:"Free"},
+      {n:"Malpe Beach", t:"Beach", d:"Golden-sand beach with a jetty for boat rides to St. Mary's Island.", price:"Free"},
+      {n:"St. Mary's Island", t:"Nature", d:"Volcanic rock formations with hexagonal basalt columns, reachable by ferry from Malpe.", price:"₹150 boat ride"},
+      {n:"Kaup Beach & Lighthouse", t:"Beach", d:"Quiet beach with a red-and-white lighthouse offering coastal sunset views.", price:"₹20 lighthouse entry"},
+      {n:"Manipal Lake & End Point", t:"Viewpoint", d:"A scenic lake near Manipal University with a sunset viewpoint nearby.", price:"Free"}
+    ],
+    food:[
+      {n:"Mitra Samaj Bhojanalaya", t:"Udupi Veg", d:"Legendary for its banana-leaf meals and the original masala dosa.", price:"₹120-180 for two"},
+      {n:"Woodlands Restaurant", t:"South Indian", d:"Classic spot for set dosa, idli and filter coffee.", price:"₹100-150 for two"},
+      {n:"Hotel Diana", t:"Coastal Seafood", d:"Popular for Mangalorean-style fish curry, ghee roast and prawn gassi.", price:"₹400-600 for two"},
+      {n:"Janatha Deluxe", t:"Local Favourite", d:"No-frills institution serving buttery masala dosa since decades.", price:"₹80-120 for two"}
+    ],
+    stay:[
+      {n:"Swadesi Heritage Resort", t:"Budget Homestay", d:"Simple coastal-style rooms close to the temple area.", price:"₹1,200-1,800/night"},
+      {n:"The Ocean Pearl", t:"Mid-range Hotel", d:"Comfortable rooms with sea-facing options near Malpe.", price:"₹2,800-4,200/night"},
+      {n:"Sai Vishram Heritage Resort", t:"Luxury", d:"Beachside resort with pool, spa and Konkani-style architecture.", price:"₹6,000-9,000/night"}
+    ],
+    packing:["Light cotton clothes","Sunscreen & sunglasses","Comfortable walking sandals","Umbrella (Jun-Sep)","Modest clothing for temple visits","Reusable water bottle","Power bank"],
+    vibe:["Temple Town","Coastal","Foodie Paradise","Family Friendly"]
+  },
+  "goa": {
+    name:"Goa", region:"India", icon:"🏖️", tagline:"Beaches, parties & Portuguese charm",
+    bestTime:"November to February", climate:"Tropical", idealDays:"4-5 days",
+    months:[["Jan","☀️","26°C"],["Feb","☀️","27°C"],["Mar","🌤️","30°C"],["Apr","🌤️","32°C"],["May","⛈️","33°C"],["Jun","🌧️","29°C"],["Jul","🌧️","27°C"],["Aug","🌧️","27°C"],["Sep","🌦️","28°C"],["Oct","🌤️","29°C"],["Nov","☀️","27°C"],["Dec","☀️","26°C"]],
+    attractions:[
+      {n:"Baga & Calangute Beach", t:"Beach", d:"The most lively beach strip with water sports and beach shacks.", price:"Free"},
+      {n:"Fort Aguada", t:"Heritage", d:"17th-century Portuguese fort with lighthouse and sea views.", price:"Free"},
+      {n:"Basilica of Bom Jesus", t:"Heritage", d:"UNESCO World Heritage church holding the relics of St. Francis Xavier.", price:"Free"},
+      {n:"Anjuna Flea Market", t:"Shopping", d:"Wednesday flea market for souvenirs, clothes and live music.", price:"Free entry"},
+      {n:"Dudhsagar Falls", t:"Nature", d:"A four-tiered waterfall accessible via jeep safari through the forest.", price:"₹500-700 jeep safari"}
+    ],
+    food:[
+      {n:"Fisherman's Wharf", t:"Goan Seafood", d:"Riverside dining famous for prawn balchao and crab xec xec.", price:"₹800-1200 for two"},
+      {n:"Vinayak Family Restaurant", t:"Local Goan", d:"Hidden gem loved for fish thali and authentic Goan curries.", price:"₹300-450 for two"},
+      {n:"Britto's", t:"Beach Shack", d:"Iconic Baga beach shack for seafood and sundowners.", price:"₹600-900 for two"}
+    ],
+    stay:[
+      {n:"Zostel Goa", t:"Budget Hostel", d:"Social hostel with dorms and chill common areas.", price:"₹600-1,000/night"},
+      {n:"The Baga Marina", t:"Mid-range Hotel", d:"Close to the beach with pool and easy nightlife access.", price:"₹3,500-5,000/night"},
+      {n:"Taj Fort Aguada Resort", t:"Luxury", d:"Beachfront luxury resort set inside a historic fort.", price:"₹12,000+/night"}
+    ],
+    packing:["Swimwear","Flip-flops","Sunscreen SPF 50","Light breathable clothes","Power bank","Light jacket for nights","ID proof"],
+    vibe:["Beach Party","Nightlife","Heritage","Honeymoon"]
+  },
+  "manali": {
+    name:"Manali", region:"Himachal Pradesh, India", icon:"🏔️", tagline:"Snow peaks & mountain adventure",
+    bestTime:"March to June, Dec-Jan for snow", climate:"Alpine", idealDays:"4-6 days",
+    months:[["Jan","❄️","2°C"],["Feb","❄️","4°C"],["Mar","🌤️","10°C"],["Apr","🌤️","15°C"],["May","☀️","19°C"],["Jun","🌦️","22°C"],["Jul","🌧️","20°C"],["Aug","🌧️","19°C"],["Sep","🌤️","17°C"],["Oct","🍂","12°C"],["Nov","❄️","6°C"],["Dec","❄️","2°C"]],
+    attractions:[
+      {n:"Solang Valley", t:"Adventure", d:"Paragliding, zorbing and skiing hub surrounded by snow peaks.", price:"₹800-2,500 activities"},
+      {n:"Rohtang Pass", t:"Mountain Pass", d:"High-altitude pass with snow even in summer (permit required).", price:"₹550 permit"},
+      {n:"Hadimba Temple", t:"Heritage", d:"Wooden temple set inside a cedar forest, dedicated to Hidimba Devi.", price:"Free"},
+      {n:"Old Manali", t:"Cafe Hopping", d:"Riverside lanes lined with cafes, boutique shops and live music.", price:"Free"},
+      {n:"Jogini Waterfall", t:"Trek", d:"An easy 3km trek through villages leading to a scenic waterfall.", price:"Free"}
+    ],
+    food:[
+      {n:"Cafe 1947", t:"Continental & Israeli", d:"Riverside cafe with shakshuka, pasta and live acoustic music.", price:"₹600-900 for two"},
+      {n:"Johnson's Cafe", t:"Trout & Continental", d:"Famous for fresh trout fish and apple crumble in a garden setting.", price:"₹900-1,300 for two"},
+      {n:"Mount View Restaurant", t:"North Indian", d:"Local favourite for hearty thalis and momos.", price:"₹350-500 for two"}
+    ],
+    stay:[
+      {n:"Zostel Manali", t:"Budget Hostel", d:"Riverside hostel with bonfire nights and dorms.", price:"₹700-1,200/night"},
+      {n:"Snow Valley Resorts", t:"Mid-range", d:"Mountain-view rooms close to Old Manali.", price:"₹3,000-4,500/night"},
+      {n:"The Himalayan", t:"Luxury", d:"Boutique luxury stay with valley views and spa.", price:"₹8,000-14,000/night"}
+    ],
+    packing:["Heavy woolens & thermals","Waterproof jacket","Trekking shoes","Gloves & beanie","Power bank","Sunglasses (snow glare)","Personal medication"],
+    vibe:["Snow & Mountains","Adventure Sports","Honeymoon","Cafe Culture"]
+  },
+  "jaipur": {
+    name:"Jaipur", region:"Rajasthan, India", icon:"🏰", tagline:"The royal Pink City",
+    bestTime:"October to March", climate:"Semi-arid", idealDays:"3-4 days",
+    months:[["Jan","☀️","16°C"],["Feb","☀️","20°C"],["Mar","🌤️","26°C"],["Apr","🔥","32°C"],["May","🔥","37°C"],["Jun","🔥","36°C"],["Jul","🌧️","31°C"],["Aug","🌧️","29°C"],["Sep","🌤️","30°C"],["Oct","🌤️","27°C"],["Nov","☀️","21°C"],["Dec","☀️","17°C"]],
+    attractions:[
+      {n:"Amber Fort", t:"Heritage", d:"Majestic hilltop fort with mirror palace and elephant rides.", price:"₹200-550 entry"},
+      {n:"Hawa Mahal", t:"Heritage", d:"Iconic pink sandstone facade with 953 small windows.", price:"₹50-200 entry"},
+      {n:"City Palace", t:"Heritage", d:"Royal residence complex showcasing Rajput and Mughal architecture.", price:"₹200-700 entry"},
+      {n:"Jal Mahal", t:"Landmark", d:"A palace that appears to float in the middle of Man Sagar Lake.", price:"Free (view only)"},
+      {n:"Johari Bazaar", t:"Shopping", d:"Famous market for traditional jewellery, gemstones and textiles.", price:"Free entry"}
+    ],
+    food:[
+      {n:"Laxmi Misthan Bhandar (LMB)", t:"Rajasthani Veg", d:"Legendary since 1727 for dal baati churma and kachoris.", price:"₹400-600 for two"},
+      {n:"Chokhi Dhani", t:"Rajasthani Thali", d:"Village-themed resort offering an unlimited traditional thali experience.", price:"₹900-1,200 for two"},
+      {n:"Rawat Mishthan Bhandar", t:"Street Food", d:"Famous for pyaaz kachori and mawa kachori.", price:"₹100-150 for two"}
+    ],
+    stay:[
+      {n:"Zostel Jaipur", t:"Budget Hostel", d:"Heritage-style hostel near the old city.", price:"₹700-1,100/night"},
+      {n:"Hotel Pearl Palace", t:"Mid-range", d:"Boutique heritage hotel with rooftop dining.", price:"₹2,200-3,500/night"},
+      {n:"Rambagh Palace", t:"Luxury", d:"Former royal residence turned 5-star heritage palace hotel.", price:"₹18,000+/night"}
+    ],
+    packing:["Light cotton clothes","Comfortable walking shoes","Sunscreen & cap","Scarf (for forts & sun)","Power bank","Light jacket for winter nights","Camera"],
+    vibe:["Royal Heritage","Shopping","Architecture","Culture"]
+  },
+  "bangalore": {
+    name:"Bangalore", region:"Karnataka, India", icon:"🌆", tagline:"India's Garden City & tech hub",
+    bestTime:"October to February", climate:"Pleasant, moderate", idealDays:"2-3 days",
+    months:[["Jan","☀️","21°C"],["Feb","☀️","24°C"],["Mar","🌤️","27°C"],["Apr","🌤️","28°C"],["May","🌦️","27°C"],["Jun","🌧️","24°C"],["Jul","🌧️","23°C"],["Aug","🌧️","23°C"],["Sep","🌦️","24°C"],["Oct","🌤️","23°C"],["Nov","☀️","21°C"],["Dec","☀️","20°C"]],
+    attractions:[
+      {n:"Lalbagh Botanical Garden", t:"Nature", d:"240-acre garden with a glasshouse, lake and rare tropical plants.", price:"₹30 entry"},
+      {n:"Bangalore Palace", t:"Heritage", d:"Tudor-style royal palace with European interiors and manicured lawns.", price:"₹230 entry"},
+      {n:"Cubbon Park", t:"Nature", d:"A sprawling green park in the city centre, great for a morning walk.", price:"Free"},
+      {n:"ISKCON Temple", t:"Temple", d:"One of the largest Krishna temples in the world, on Hare Krishna Hill.", price:"Free"},
+      {n:"Nandi Hills", t:"Day Trip", d:"Hilltop retreat near the city, famous for sunrise views.", price:"₹20 entry"}
+    ],
+    food:[
+      {n:"Vidyarthi Bhavan", t:"South Indian", d:"Iconic Basavanagudi eatery famous for its crispy masala dosa since 1943.", price:"₹100-150 for two"},
+      {n:"MTR (Mavalli Tiffin Room)", t:"South Indian", d:"Legendary breakfast institution known for rava idli and filter coffee.", price:"₹150-250 for two"},
+      {n:"Truffles", t:"Continental/Cafe", d:"Popular Indiranagar spot for burgers and milkshakes.", price:"₹500-700 for two"},
+      {n:"Meghana Foods", t:"Andhra/Biryani", d:"Famed for spicy Andhra-style chicken biryani.", price:"₹400-600 for two"}
+    ],
+    stay:[
+      {n:"Zostel Bangalore", t:"Budget Hostel", d:"Social hostel close to MG Road with rooftop hangout space.", price:"₹700-1,200/night"},
+      {n:"Ginger Bangalore", t:"Mid-range Hotel", d:"Clean, efficient business-style hotel chain with multiple locations.", price:"₹2,500-3,800/night"},
+      {n:"The Leela Palace Bengaluru", t:"Luxury", d:"Opulent palace-style 5-star hotel with multiple fine-dining options.", price:"₹14,000+/night"}
+    ],
+    packing:["Light layered clothing","Light jacket for evenings","Comfortable walking shoes","Umbrella (monsoon months)","Power bank","Sunglasses"],
+    vibe:["City Break","Tech & Culture","Gardens & Parks","Food Hub"]
+  },
+  "mysore": {
+    name:"Mysore", region:"Karnataka, India", icon:"🏯", tagline:"City of palaces & silk",
+    bestTime:"October to March", climate:"Moderate, pleasant", idealDays:"2-3 days",
+    months:[["Jan","☀️","23°C"],["Feb","☀️","25°C"],["Mar","🌤️","28°C"],["Apr","🔥","30°C"],["May","🌦️","29°C"],["Jun","🌧️","26°C"],["Jul","🌧️","25°C"],["Aug","🌧️","25°C"],["Sep","🌦️","25°C"],["Oct","🌤️","25°C"],["Nov","☀️","23°C"],["Dec","☀️","22°C"]],
+    attractions:[
+      {n:"Mysore Palace", t:"Heritage", d:"Magnificent Indo-Saracenic palace, spectacularly lit up on Sunday evenings.", price:"₹70-200 entry"},
+      {n:"Chamundi Hill", t:"Temple/Viewpoint", d:"Hilltop temple dedicated to Goddess Chamundeshwari with panoramic city views.", price:"Free"},
+      {n:"Brindavan Gardens", t:"Garden", d:"Terraced musical fountain gardens beside the Krishnarajasagar Dam.", price:"₹50-100 entry"},
+      {n:"Mysore Zoo", t:"Wildlife", d:"One of India's oldest and best-maintained zoos.", price:"₹100-300 entry"},
+      {n:"Devaraja Market", t:"Shopping", d:"Vibrant market for flowers, spices, incense and Mysore silk.", price:"Free entry"}
+    ],
+    food:[
+      {n:"Vinayaka Mylari", t:"South Indian", d:"Famous for soft, ghee-laden Mysore-style dosa.", price:"₹80-120 for two"},
+      {n:"Hotel RRR", t:"Andhra Thali", d:"Popular for spicy non-veg thalis and biryani.", price:"₹400-600 for two"},
+      {n:"Mylari Hotel", t:"Local Favourite", d:"Old-school institution serving classic Mysore dosa & coffee.", price:"₹80-120 for two"}
+    ],
+    stay:[
+      {n:"Zostel Mysore", t:"Budget Hostel", d:"Cosy hostel with a garden, close to the palace.", price:"₹700-1,100/night"},
+      {n:"Royal Orchid Metropole", t:"Mid-range", d:"Heritage-style hotel with colonial charm and lush garden.", price:"₹3,500-5,000/night"},
+      {n:"Radisson Blu Plaza Mysore", t:"Luxury", d:"Upscale hotel with pool, spa and fine dining.", price:"₹7,000-10,000/night"}
+    ],
+    packing:["Light cotton clothes","Comfortable walking shoes","Sunscreen & cap","Modest clothing for temples","Power bank","Camera for the lit-up palace"],
+    vibe:["Royal Heritage","Gardens","Culture","Shopping"]
+  },
+  "coorg": {
+    name:"Coorg (Kodagu)", region:"Karnataka, India", icon:"🌿", tagline:"Misty hills & coffee plantations",
+    bestTime:"October to March", climate:"Cool, misty hill climate", idealDays:"3-4 days",
+    months:[["Jan","🌥️","17°C"],["Feb","🌤️","19°C"],["Mar","🌤️","23°C"],["Apr","🌦️","25°C"],["May","🌧️","24°C"],["Jun","🌧️","19°C"],["Jul","🌧️","18°C"],["Aug","🌧️","18°C"],["Sep","🌧️","20°C"],["Oct","🌤️","21°C"],["Nov","🌥️","19°C"],["Dec","🌥️","17°C"]],
+    attractions:[
+      {n:"Abbey Falls", t:"Nature", d:"A scenic waterfall surrounded by coffee and spice plantations.", price:"₹15 entry"},
+      {n:"Raja's Seat", t:"Viewpoint", d:"Famous sunset viewpoint once used by Kodagu kings, overlooking valleys.", price:"₹20 entry"},
+      {n:"Dubare Elephant Camp", t:"Wildlife", d:"Riverside camp where you can interact with and bathe elephants.", price:"₹50-300"},
+      {n:"Talacauvery", t:"Pilgrimage/Nature", d:"The sacred source of the Cauvery river, set on a misty hilltop.", price:"Free"},
+      {n:"Coffee Plantation Walk", t:"Experience", d:"Guided walks through aromatic coffee, cardamom and pepper estates.", price:"₹200-500"}
+    ],
+    food:[
+      {n:"Coorg Cuisine", t:"Kodava Specialty", d:"Known for Pandi curry (pork) and akki roti in a homely setting.", price:"₹500-700 for two"},
+      {n:"Coorg Coffee House", t:"Cafe", d:"Cosy plantation-grown coffee and local snacks.", price:"₹200-350 for two"},
+      {n:"Raintree Restaurant", t:"Multi-cuisine", d:"Garden-set restaurant blending Kodava and continental dishes.", price:"₹600-900 for two"}
+    ],
+    stay:[
+      {n:"Coorg Backpackers Hostel", t:"Budget", d:"Simple stay amid greenery, popular with solo travellers.", price:"₹900-1,400/night"},
+      {n:"Coorg Wilderness Resort", t:"Mid-range", d:"Cottage-style stay surrounded by coffee plantations.", price:"₹4,000-6,000/night"},
+      {n:"The Tamara Coorg", t:"Luxury", d:"Treetop luxury cottages with valley and plantation views.", price:"₹15,000+/night"}
+    ],
+    packing:["Light woolens / windcheater","Waterproof shoes","Umbrella or raincoat","Insect repellent","Power bank","Camera"],
+    vibe:["Hill Station","Coffee Country","Nature","Honeymoon"]
+  },
+  "hampi": {
+    name:"Hampi", region:"Karnataka, India", icon:"🪨", tagline:"Ruins of the Vijayanagara Empire",
+    bestTime:"October to February", climate:"Hot, dry", idealDays:"2-3 days",
+    months:[["Jan","☀️","28°C"],["Feb","☀️","31°C"],["Mar","🔥","35°C"],["Apr","🔥","38°C"],["May","🔥","39°C"],["Jun","🌦️","35°C"],["Jul","🌦️","32°C"],["Aug","🌦️","31°C"],["Sep","🌤️","32°C"],["Oct","🌤️","31°C"],["Nov","☀️","29°C"],["Dec","☀️","27°C"]],
+    attractions:[
+      {n:"Virupaksha Temple", t:"Temple", d:"Ancient, still-active temple with a towering gopuram, dating back to the 7th century.", price:"Free"},
+      {n:"Vittala Temple & Stone Chariot", t:"Heritage", d:"Iconic stone chariot and musical pillars showcasing Vijayanagara craftsmanship.", price:"₹40-600 entry"},
+      {n:"Hampi Bazaar & Matanga Hill", t:"Viewpoint", d:"Sunrise hike over ruins of the old market street.", price:"Free"},
+      {n:"Lotus Mahal & Elephant Stables", t:"Heritage", d:"Indo-Islamic architecture inside the royal enclosure.", price:"₹40-600 entry"},
+      {n:"Tungabhadra River Coracle Ride", t:"Experience", d:"A traditional round-boat ride past boulder-strewn riverbanks.", price:"₹300-500"}
+    ],
+    food:[
+      {n:"Mango Tree Restaurant", t:"Local/Continental", d:"Riverside open-air restaurant known for thalis and fresh juices.", price:"₹300-450 for two"},
+      {n:"Laughing Buddha", t:"Cafe", d:"Backpacker favourite across the river with chill vibes and pizza.", price:"₹400-600 for two"},
+      {n:"Gopi Guest House Rooftop", t:"Local", d:"Simple rooftop dining with ruins views.", price:"₹250-400 for two"}
+    ],
+    stay:[
+      {n:"Hampi's Boulders Hostel", t:"Budget", d:"Backpacker hostel across the river amid boulder landscapes.", price:"₹600-1,000/night"},
+      {n:"Clarks Inn Hampi", t:"Mid-range", d:"Comfortable rooms close to the main ruins.", price:"₹3,000-4,500/night"},
+      {n:"Evolve Back Hampi", t:"Luxury", d:"Royal-style luxury resort inspired by Vijayanagara architecture.", price:"₹20,000+/night"}
+    ],
+    packing:["Light breathable clothes","Sturdy walking shoes (rocky terrain)","Wide-brim hat & sunglasses","High-SPF sunscreen","Reusable water bottle","Power bank"],
+    vibe:["UNESCO Heritage","Ruins & History","Backpacker Favourite","Photography"]
+  },
+  "chikmagalur": {
+    name:"Chikmagalur", region:"Karnataka, India", icon:"⛰️", tagline:"Coffee hills of the Western Ghats",
+    bestTime:"October to May", climate:"Cool hill climate", idealDays:"2-3 days",
+    months:[["Jan","🌥️","18°C"],["Feb","🌤️","20°C"],["Mar","🌤️","24°C"],["Apr","🌦️","26°C"],["May","🌧️","24°C"],["Jun","🌧️","19°C"],["Jul","🌧️","17°C"],["Aug","🌧️","17°C"],["Sep","🌧️","19°C"],["Oct","🌤️","20°C"],["Nov","🌥️","19°C"],["Dec","🌥️","18°C"]],
+    attractions:[
+      {n:"Mullayanagiri Peak", t:"Trek", d:"The highest peak in Karnataka, offering sweeping ghat views from the summit.", price:"Free"},
+      {n:"Baba Budangiri", t:"Trek/Pilgrimage", d:"A scenic hill range and cave shrine revered by multiple faiths.", price:"Free"},
+      {n:"Hebbe Falls", t:"Nature", d:"A remote waterfall reached via jeep ride through coffee estates.", price:"₹400-600 jeep"},
+      {n:"Coffee Museum", t:"Experience", d:"Learn about Karnataka's coffee heritage and brewing traditions.", price:"₹50 entry"},
+      {n:"Kemmangundi", t:"Hill Station", d:"A quieter hill town with gardens and viewpoints nearby.", price:"Free"}
+    ],
+    food:[
+      {n:"Coffee Bean Estate Cafe", t:"Cafe", d:"Plantation-fresh coffee and homestyle Kannadiga snacks.", price:"₹250-400 for two"},
+      {n:"Karnika Restaurant", t:"Multi-cuisine", d:"Resort restaurant with North & South Indian options.", price:"₹600-900 for two"},
+      {n:"Local Malnad Thali Spots", t:"Regional", d:"Family-run eateries serving traditional Malnad-style thalis.", price:"₹200-350 for two"}
+    ],
+    stay:[
+      {n:"Chikmagalur Backpacker Stay", t:"Budget", d:"Simple homestay rooms amid coffee estates.", price:"₹900-1,400/night"},
+      {n:"Coffee Land Homestay", t:"Mid-range", d:"Family-run estate stay with home-cooked meals.", price:"₹2,500-4,000/night"},
+      {n:"Taj Madikeri Resort & Spa", t:"Luxury", d:"Premium resort with spa and panoramic ghat views (nearby region).", price:"₹12,000+/night"}
+    ],
+    packing:["Warm layers for evenings","Trekking shoes","Raincoat (monsoon season)","Insect repellent","Power bank","Reusable water bottle"],
+    vibe:["Coffee Estates","Trekking","Hill Station","Nature"]
+  },
+  "gokarna": {
+    name:"Gokarna", region:"Karnataka, India", icon:"🏖️", tagline:"Laid-back beaches & temple town",
+    bestTime:"October to March", climate:"Tropical coastal", idealDays:"2-3 days",
+    months:[["Jan","☀️","27°C"],["Feb","☀️","28°C"],["Mar","🌤️","30°C"],["Apr","🌤️","32°C"],["May","⛈️","32°C"],["Jun","🌧️","27°C"],["Jul","🌧️","26°C"],["Aug","🌧️","26°C"],["Sep","🌦️","27°C"],["Oct","🌤️","28°C"],["Nov","☀️","27°C"],["Dec","☀️","26°C"]],
+    attractions:[
+      {n:"Om Beach", t:"Beach", d:"A beach shaped like the 'Om' symbol, popular for sunbathing and water sports.", price:"Free"},
+      {n:"Kudle Beach", t:"Beach", d:"A relaxed beach lined with shacks, great for sunsets.", price:"Free"},
+      {n:"Mahabaleshwar Temple", t:"Temple", d:"Ancient Shiva temple believed to house the Atmalinga.", price:"Free"},
+      {n:"Half Moon & Paradise Beach", t:"Beach Trek", d:"Secluded beaches reachable by a scenic coastal trek or boat.", price:"Free"},
+      {n:"Beach Coastal Trek", t:"Trek", d:"A walkable trail connecting all five Gokarna beaches.", price:"Free"}
+    ],
+    food:[
+      {n:"Namaste Cafe", t:"Cafe", d:"Beachfront cafe famous for its wood-fired pizzas and sunset views.", price:"₹400-600 for two"},
+      {n:"Prema Restaurant", t:"Local Coastal", d:"Long-standing local favourite for fresh seafood thalis.", price:"₹350-500 for two"},
+      {n:"Pai Hotel", t:"South Indian", d:"Simple, reliable spot for dosa and filter coffee near the temple.", price:"₹100-180 for two"}
+    ],
+    stay:[
+      {n:"Gokarna Beach Hostel", t:"Budget", d:"Beach huts and dorms steps from Kudle Beach.", price:"₹500-900/night"},
+      {n:"SwaSwara", t:"Mid-range/Wellness", d:"Tranquil eco-resort with yoga and Konkani cottages.", price:"₹6,000-9,000/night"},
+      {n:"Soma Sand Beach Resort", t:"Luxury", d:"Beachfront resort with private cottages and pool.", price:"₹9,000+/night"}
+    ],
+    packing:["Swimwear & light clothes","Flip-flops/trekking sandals","Sunscreen","Reusable water bottle","Power bank","Modest clothing for the temple"],
+    vibe:["Beach","Backpacker Favourite","Spiritual","Laid-back"]
+  },
+  "paris": {
+    name:"Paris", region:"France", icon:"🗼", tagline:"The city of light & romance",
+    bestTime:"April to June, September-October", climate:"Temperate", idealDays:"4-5 days",
+    months:[["Jan","❄️","5°C"],["Feb","🌥️","6°C"],["Mar","🌤️","10°C"],["Apr","🌤️","13°C"],["May","☀️","17°C"],["Jun","☀️","20°C"],["Jul","☀️","23°C"],["Aug","☀️","23°C"],["Sep","🌤️","19°C"],["Oct","🍂","14°C"],["Nov","🌥️","9°C"],["Dec","❄️","6°C"]],
+    attractions:[
+      {n:"Eiffel Tower", t:"Landmark", d:"The icon of Paris — best visited at sunset for the city skyline.", price:"€18-29"},
+      {n:"Louvre Museum", t:"Museum", d:"World's largest art museum, home to the Mona Lisa.", price:"€17"},
+      {n:"Montmartre & Sacré-Cœur", t:"Neighbourhood", d:"Artsy hilltop district with cobbled streets and a basilica view.", price:"Free"},
+      {n:"Seine River Cruise", t:"Experience", d:"An evening boat cruise past illuminated landmarks.", price:"€15-25"},
+      {n:"Palace of Versailles", t:"Heritage", d:"Opulent former royal residence with vast gardens, a day trip away.", price:"€20-27"}
+    ],
+    food:[
+      {n:"Le Comptoir du Relais", t:"French Bistro", d:"Cosy Saint-Germain bistro loved for classic French dishes.", price:"€60-90 for two"},
+      {n:"L'As du Fallafel", t:"Street Food", d:"Marais institution famous for its falafel sandwiches.", price:"€15-20 for two"},
+      {n:"Café de Flore", t:"Historic Cafe", d:"Legendary literary cafe for coffee and people-watching.", price:"€30-45 for two"}
+    ],
+    stay:[
+      {n:"Generator Paris", t:"Budget Hostel", d:"Stylish hostel near Canal Saint-Martin.", price:"€35-60/night"},
+      {n:"Hotel Bastille Speria", t:"Mid-range", d:"Comfortable boutique hotel near Bastille.", price:"€140-200/night"},
+      {n:"Le Meurice", t:"Luxury", d:"Palace hotel opposite the Tuileries Garden.", price:"€1,200+/night"}
+    ],
+    packing:["Comfortable walking shoes","Layered clothing","Compact umbrella","Universal adapter","Crossbody bag (anti-theft)","Light scarf","Portable charger"],
+    vibe:["Romance","Art & Museums","City Break","Foodie"]
+  }
+};
+
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+
+function generateGenericCity(query){
+  const h = hashStr(query.toLowerCase());
+  const icons=["🌍","🏙️","🏞️","⛰️","🏝️","🛶","🕌","🏯"];
+  const climates=["Tropical","Temperate","Mediterranean","Alpine","Desert","Coastal"];
+  const bestTimes=["October to March","April to June","November to February","March to May, Sep-Nov"];
+  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m,i)=>{
+    const icons2=["☀️","🌤️","🌦️","🌧️","❄️","🍂"];
+    const temp = 10 + ((h+i*7)%25);
+    return [m, icons2[(h+i)%icons2.length], temp+"°C"];
+  });
+  const name = query.charAt(0).toUpperCase()+query.slice(1);
+  return {
+    name, region:"Explore & discover", icon: icons[h%icons.length], tagline:"A destination worth discovering",
+    bestTime: bestTimes[h%bestTimes.length], climate: climates[h%climates.length], idealDays: (2+(h%4))+"-"+(3+(h%4))+" days",
+    months,
+    attractions:[
+      {n:name+" Old Town", t:"Heritage", d:"The historic heart of "+name+", filled with local architecture and culture.", price:"Free"},
+      {n:name+" Central Market", t:"Local Life", d:"A bustling market great for local snacks, crafts and souvenirs.", price:"Free entry"},
+      {n:name+" Viewpoint", t:"Viewpoint", d:"A popular spot for panoramic views, especially around sunset.", price:"Free"},
+      {n:name+" Nature Trail", t:"Nature", d:"A scenic trail just outside the city, ideal for a half-day outing.", price:"Free"}
+    ],
+    food:[
+      {n:"The Local Kitchen", t:"Regional Cuisine", d:"A well-loved spot for authentic regional dishes at fair prices.", price:"Budget-friendly"},
+      {n:name+" Food Street", t:"Street Food", d:"A lively strip of stalls serving local street-food favourites.", price:"Very affordable"},
+      {n:"Heritage Dining House", t:"Fine Dining", d:"A higher-end restaurant known for a refined take on local flavours.", price:"Mid-to-high range"}
+    ],
+    stay:[
+      {n:name+" Backpackers Hostel", t:"Budget", d:"Clean dorms and social common spaces for budget travellers.", price:"Low cost/night"},
+      {n:name+" Comfort Inn", t:"Mid-range", d:"Reliable mid-range hotel close to the main attractions.", price:"Moderate/night"},
+      {n:"Grand "+name+" Resort", t:"Luxury", d:"A premium stay with top-tier amenities and service.", price:"Premium/night"}
+    ],
+    packing:["Comfortable walking shoes","Weather-appropriate clothing","Power bank & adapter","Reusable water bottle","Basic first-aid kit","Copies of ID/documents"],
+    vibe:["Hidden Gem","Local Culture","Worth Exploring"]
+  };
+}
+
+function getCity(query){
+  const key = query.trim().toLowerCase();
+  if(CITY_DB[key]) return CITY_DB[key];
+  for(const k in CITY_DB){ if(k.includes(key) || key.includes(k)) return CITY_DB[k]; }
+  return generateGenericCity(query.trim() || "Somewhere New");
+}
+
+const FEATURED = ["udupi","bangalore","mysore","coorg","hampi","chikmagalur","gokarna","goa","manali","jaipur","paris"];
+const KARNATAKA_KEYS = ["udupi","bangalore","mysore","coorg","hampi","chikmagalur","gokarna"];
+
+/* ================= APP STATE ================= */
+let state = {
+  page: "login", // login | signup | forgot | home | destination | planner | journal | profile
+  prevPage: "home",
+  user: null, // {name, email, initials}
+  users: {}, // mock "db" email -> {name, password}
+  authError: "",
+  authSuccess: "",
+  currentCity: null,
+  destTab: "overview",
+  journal: [], // {id, place, date, text, photos:[base64]}
+  trips: [], // saved budget plans
+};
+
+function setState(patch){ state = {...state, ...patch}; render(); }
+function nav(page){ setState({page}); window.scrollTo(0,0); }
+
+function initials(name){
+  return name.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
+}
+
+/* ================= RENDER HELPERS ================= */
+function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
+
+function topNav(active){
+  return `
+  <div class="topnav">
+    <div class="brand" onclick="nav('home')"><div class="mark">🧭</div>WanderWise</div>
+    <div class="navlinks">
+      <button class="${active==='home'?'active':''}" onclick="nav('home')">Explore</button>
+      <button class="${active==='planner'?'active':''}" onclick="nav('planner')">Trip Planner</button>
+      <button class="${active==='journal'?'active':''}" onclick="nav('journal')">Journal</button>
+      <button class="${active==='profile'?'active':''}" onclick="nav('profile')">Profile</button>
+    </div>
+    <div class="navuser">
+      <div class="avatar">${state.user?initials(state.user.name):''}</div>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Log out</button>
+    </div>
+  </div>`;
+}
+
+/* ================= AUTH PAGES ================= */
+function renderLogin(){
+  return `
+  <div class="auth-shell">
+    <div class="auth-art">
+      <div class="quote">
+        <div style="font-size:46px;margin-bottom:14px;">🧭</div>
+        <h2>Travel, wisely.</h2>
+        <p>Find the best time to visit, where to eat, where to stay, and a budget plan tailored to you — all in one place.</p>
+      </div>
+    </div>
+    <div class="auth-form-side">
+      <div class="auth-card">
+        <h2 style="font-size:26px;margin-bottom:6px;">Welcome back</h2>
+        <p style="color:var(--ink-soft);font-size:14px;margin-bottom:24px;">Log in to keep planning your next trip.</p>
+        ${state.authError?`<div class="error-msg">${state.authError}</div>`:''}
+        ${state.authSuccess?`<div class="success-msg">${state.authSuccess}</div>`:''}
+        <div class="field"><label>Email</label><input id="li-email" type="email" placeholder="you@example.com"/></div>
+        <div class="field"><label>Password</label><input id="li-pass" type="password" placeholder="••••••••"/></div>
+        <div style="text-align:right;margin-bottom:18px;"><span class="auth-link" onclick="nav('forgot')" style="font-size:13px;">Forgot password?</span></div>
+        <button class="btn btn-primary" style="width:100%;" onclick="doLogin()">Log in</button>
+        <p class="helper">New to WanderWise? <span class="auth-link" onclick="setState({page:'signup',authError:'',authSuccess:''})">Create an account</span></p>
+        <p class="helper" style="margin-top:6px;font-size:12px;">Tip: try demo@wanderwise.com / demo1234</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderSignup(){
+  return `
+  <div class="auth-shell">
+    <div class="auth-art">
+      <div class="quote">
+        <div style="font-size:46px;margin-bottom:14px;">🌍</div>
+        <h2>Plan smarter, remember longer.</h2>
+        <p>Get curated picks for attractions, food and stays, a budget guide, packing checklists, and a personal travel journal.</p>
+      </div>
+    </div>
+    <div class="auth-form-side">
+      <div class="auth-card">
+        <h2 style="font-size:26px;margin-bottom:6px;">Create your account</h2>
+        <p style="color:var(--ink-soft);font-size:14px;margin-bottom:24px;">Start planning trips in minutes.</p>
+        ${state.authError?`<div class="error-msg">${state.authError}</div>`:''}
+        <div class="field"><label>Full name</label><input id="su-name" type="text" placeholder="Asha Rao"/></div>
+        <div class="field"><label>Email</label><input id="su-email" type="email" placeholder="you@example.com"/></div>
+        <div class="field"><label>Password</label><input id="su-pass" type="password" placeholder="At least 6 characters"/></div>
+        <div class="field"><label>Confirm password</label><input id="su-pass2" type="password" placeholder="Re-enter password"/></div>
+        <button class="btn btn-primary" style="width:100%;margin-top:6px;" onclick="doSignup()">Create account</button>
+        <p class="helper">Already have an account? <span class="auth-link" onclick="setState({page:'login',authError:''})">Log in</span></p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderForgot(){
+  return `
+  <div class="auth-shell">
+    <div class="auth-art">
+      <div class="quote">
+        <div style="font-size:46px;margin-bottom:14px;">🔑</div>
+        <h2>Locked out? No worries.</h2>
+        <p>We'll help you get back to planning your next getaway in no time.</p>
+      </div>
+    </div>
+    <div class="auth-form-side">
+      <div class="auth-card">
+        <h2 style="font-size:26px;margin-bottom:6px;">Reset your password</h2>
+        <p style="color:var(--ink-soft);font-size:14px;margin-bottom:24px;">Enter your email and we'll send a reset link (simulated for this demo).</p>
+        ${state.authError?`<div class="error-msg">${state.authError}</div>`:''}
+        ${state.authSuccess?`<div class="success-msg">${state.authSuccess}</div>`:''}
+        <div class="field"><label>Email</label><input id="fg-email" type="email" placeholder="you@example.com"/></div>
+        <button class="btn btn-primary" style="width:100%;" onclick="doForgot()">Send reset link</button>
+        <p class="helper"><span class="auth-link" onclick="setState({page:'login',authError:'',authSuccess:''})">← Back to login</span></p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function doLogin(){
+  const email = document.getElementById('li-email').value.trim().toLowerCase();
+  const pass = document.getElementById('li-pass').value;
+  if(!email || !pass){ setState({authError:"Please enter both email and password."}); return; }
+  const u = state.users[email];
+  if(!u || u.password!==pass){ setState({authError:"Email or password is incorrect."}); return; }
+  setState({user:{name:u.name, email}, page:'home', authError:'', authSuccess:''});
+}
+
+function doSignup(){
+  const name = document.getElementById('su-name').value.trim();
+  const email = document.getElementById('su-email').value.trim().toLowerCase();
+  const pass = document.getElementById('su-pass').value;
+  const pass2 = document.getElementById('su-pass2').value;
+  if(!name||!email||!pass||!pass2){ setState({authError:"Please fill in every field."}); return; }
+  if(pass.length<6){ setState({authError:"Password must be at least 6 characters."}); return; }
+  if(pass!==pass2){ setState({authError:"Passwords don't match."}); return; }
+  if(state.users[email]){ setState({authError:"An account with this email already exists."}); return; }
+  const users = {...state.users, [email]:{name,password:pass}};
+  setState({users, user:{name,email}, page:'home', authError:''});
+}
+
+function doForgot(){
+  const email = document.getElementById('fg-email').value.trim().toLowerCase();
+  if(!email){ setState({authError:"Please enter your email.", authSuccess:''}); return; }
+  if(!state.users[email]){ setState({authError:"No account found with that email.", authSuccess:''}); return; }
+  setState({authSuccess:"A password reset link has been sent to "+email+" (simulated).", authError:''});
+}
+
+function logout(){ setState({user:null, page:'login', authError:'', authSuccess:''}); }
+
+/* seed a demo account */
+state.users['demo@wanderwise.com'] = {name:"Demo Traveller", password:"demo1234"};
+
+/* ================= HOME ================= */
+function renderHome(){
+  const cards = FEATURED.map(k=>{
+    const c = CITY_DB[k];
+    return `<div class="dest-card" onclick="openCity('${c.name}')">
+      <div class="img" style="background:linear-gradient(135deg, var(--sky), var(--lavender));">${c.icon}</div>
+      <div class="body">
+        <h4>${c.name}</h4>
+        <div class="tag">${c.region}</div>
+        <span class="badge">Best: ${c.bestTime.split(',')[0]}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+  ${topNav('home')}
+  <div class="page"><div class="wrap">
+    <div class="hero">
+      <h1>Hi ${state.user.name.split(' ')[0]}, where to next?</h1>
+      <p>Search any place to instantly get the best time to visit, must-see attractions, food spots, stays, a budget plan and a packing list.</p>
+      <div class="search-bar">
+        <input id="home-search" type="text" placeholder="Search a place... e.g. Udupi, Goa, Manali" onkeydown="if(event.key==='Enter')searchCity()"/>
+        <button onclick="searchCity()">Search</button>
+      </div>
+      <div class="chips">
+        ${FEATURED.map(k=>`<div class="chip" onclick="openCity('${CITY_DB[k].name}')">${CITY_DB[k].icon} ${CITY_DB[k].name}</div>`).join('')}
+      </div>
+    </div>
+
+    <h3 class="section-title">Popular destinations</h3>
+    <div class="grid">${cards}</div>
+
+    <h3 class="section-title">🌴 Spotlight: Karnataka</h3>
+    <div class="grid">${KARNATAKA_KEYS.map(k=>{
+      const c = CITY_DB[k];
+      return `<div class="dest-card" onclick="openCity('${c.name}')">
+        <div class="img" style="background:linear-gradient(135deg, var(--sage), var(--sky));">${c.icon}</div>
+        <div class="body">
+          <h4>${c.name}</h4>
+          <div class="tag">${c.tagline}</div>
+          <span class="badge">Best: ${c.bestTime.split(',')[0]}</span>
+        </div>
+      </div>`;
+    }).join('')}</div>
+
+    <h3 class="section-title">Plan around your budget</h3>
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <div>
+        <h4 style="font-size:18px;margin-bottom:6px;">Tell us your budget — we'll guide the rest</h4>
+        <p style="color:var(--ink-soft);font-size:14px;max-width:480px;">Get a suggested split for stay, food, transport & activities, plus matching restaurant and hotel picks for any destination.</p>
+      </div>
+      <button class="btn btn-primary" onclick="nav('planner')">Open Trip Planner →</button>
+    </div>
+  </div></div>
+  <footer>WanderWise — plan less, wander more 🌿</footer>`;
+}
+
+function searchCity(){
+  const q = document.getElementById('home-search').value;
+  if(!q || !q.trim()) return;
+  openCity(q);
+}
+
+function openCity(name){
+  const city = getCity(name);
+  setState({currentCity:city, destTab:'overview', page:'destination'});
+}
+
+/* ================= DESTINATION PAGE ================= */
+function renderDestination(){
+  const c = state.currentCity;
+  const tabs = ['overview','attractions','food','stay','packing'];
+  const tabLabels = {overview:'Overview', attractions:'Things To Do', food:'Where To Eat', stay:'Where To Stay', packing:'Packing List'};
+
+  let body = '';
+  if(state.destTab==='overview'){
+    body = `
+    <div class="two-col">
+      <div class="card">
+        <h3 style="margin-bottom:14px;">When to visit</h3>
+        <p style="font-size:14.5px;color:var(--ink-soft);line-height:1.6;">The best time to visit <b>${c.name}</b> is <b>${c.bestTime}</b>, with a ${c.climate.toLowerCase()} climate. An ideal trip length is around <b>${c.idealDays}</b>.</p>
+        <h4 style="margin:20px 0 10px;font-size:15px;">Month-by-month outlook</h4>
+        <div class="weather-strip">
+          ${c.months.map(m=>`<div class="wcard"><div class="m">${m[0]}</div><div class="ic">${m[1]}</div><div class="t">${m[2]}</div></div>`).join('')}
+        </div>
+        <div class="pill-row">${c.vibe.map(v=>`<span class="pill lav">${v}</span>`).join('')}</div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:14px;">Quick guide</h3>
+        <div class="list-item"><div class="ic">🏛️</div><div><h4>Top pick to see</h4><p>${c.attractions[0].n} — ${c.attractions[0].d}</p></div></div>
+        <div class="list-item"><div class="ic">🍽️</div><div><h4>Top pick to eat</h4><p>${c.food[0].n} — ${c.food[0].d}</p></div></div>
+        <div class="list-item"><div class="ic">🛏️</div><div><h4>Where to stay</h4><p>${c.stay[1].n} — ${c.stay[1].d}</p></div></div>
+        <button class="btn btn-primary btn-sm" style="margin-top:10px;width:100%;" onclick="goPlannerWith('${c.name}')">Plan budget for this trip →</button>
+      </div>
+    </div>`;
+  } else if(state.destTab==='attractions'){
+    body = `<div class="card">${c.attractions.map(a=>`
+      <div class="list-item"><div class="ic">📍</div><div style="flex:1;"><h4>${a.n} <span class="pill sky" style="margin-left:6px;">${a.t}</span></h4><p>${a.d}</p></div><div class="price-tag">${a.price}</div></div>`).join('')}</div>`;
+  } else if(state.destTab==='food'){
+    body = `<div class="card">${c.food.map(f=>`
+      <div class="list-item"><div class="ic">🍴</div><div style="flex:1;"><h4>${f.n} <span class="pill peach" style="margin-left:6px;">${f.t}</span></h4><p>${f.d}</p></div><div class="price-tag">${f.price}</div></div>`).join('')}</div>`;
+  } else if(state.destTab==='stay'){
+    body = `<div class="card">${c.stay.map(s=>`
+      <div class="list-item"><div class="ic">🛏️</div><div style="flex:1;"><h4>${s.n} <span class="pill" style="margin-left:6px;">${s.t}</span></h4><p>${s.d}</p></div><div class="price-tag">${s.price}</div></div>`).join('')}</div>`;
+  } else if(state.destTab==='packing'){
+    body = `<div class="card">
+      <h3 style="margin-bottom:14px;">Carry these for ${c.name}</h3>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));">
+        ${c.packing.map(p=>`<div class="list-item" style="border:none;"><div class="ic" style="background:var(--sage);">✅</div><div><p style="font-weight:600;color:var(--ink);">${p}</p></div></div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  return `
+  ${topNav('home')}
+  <div class="page"><div class="wrap">
+    <button class="btn btn-ghost btn-sm" style="margin-bottom:16px;" onclick="nav('home')">← Back to explore</button>
+    <div class="dest-hero">
+      <div>
+        <div class="icon">${c.icon}</div>
+        <h1>${c.name}</h1>
+        <p style="color:#564B61;margin-top:6px;">${c.tagline} · ${c.region}</p>
+        <div class="meta">
+          <span>📅 Best time: ${c.bestTime}</span>
+          <span>🌡️ ${c.climate}</span>
+          <span>🗓️ Ideal: ${c.idealDays}</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="openJournalFor('${c.name}')">+ Add to Journal</button>
+    </div>
+    <div class="tabbar">
+      ${tabs.map(t=>`<button class="${state.destTab===t?'active':''}" onclick="setState({destTab:'${t}'})">${tabLabels[t]}</button>`).join('')}
+    </div>
+    ${body}
+  </div></div>
+  <footer>WanderWise — plan less, wander more 🌿</footer>`;
+}
+
+function goPlannerWith(name){ setState({page:'planner', plannerCity:name}); }
+function openJournalFor(name){ setState({page:'journal', journalDraftPlace:name}); }
+
+/* ================= BUDGET PLANNER ================= */
+function renderPlanner(){
+  const presetCity = state.plannerCity || '';
+  return `
+  ${topNav('planner')}
+  <div class="page"><div class="wrap">
+    <h1 style="font-size:30px;margin-bottom:6px;">Trip Budget Planner</h1>
+    <p style="color:var(--ink-soft);margin-bottom:24px;">Tell us your destination, budget and group size — we'll suggest a spending split and matching picks.</p>
+    <div class="card">
+      <div class="budget-form">
+        <div class="field"><label>Destination</label><input id="pl-place" type="text" placeholder="e.g. Udupi" value="${presetCity}"/></div>
+        <div class="field"><label>Total budget (₹)</label><input id="pl-budget" type="number" placeholder="15000"/></div>
+        <div class="field"><label>Days</label><input id="pl-days" type="number" placeholder="3"/></div>
+        <div class="field"><label>Travellers</label><input id="pl-people" type="number" placeholder="2"/></div>
+        <div class="field"><label>Travel style</label>
+          <select id="pl-style" style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);font-size:14.5px;">
+            <option value="budget">Budget / Backpacker</option>
+            <option value="mid" selected>Mid-range / Comfort</option>
+            <option value="luxury">Luxury</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%;" onclick="calcBudget()">Generate Plan</button></div>
+      </div>
+    </div>
+    <div id="planner-result" style="margin-top:24px;"></div>
+  </div></div>
+  <footer>WanderWise — plan less, wander more 🌿</footer>`;
+}
+
+function calcBudget(){
+  const place = document.getElementById('pl-place').value || 'Your destination';
+  const budget = parseFloat(document.getElementById('pl-budget').value) || 0;
+  const days = parseInt(document.getElementById('pl-days').value) || 1;
+  const people = parseInt(document.getElementById('pl-people').value) || 1;
+  const style = document.getElementById('pl-style').value;
+  const resultEl = document.getElementById('planner-result');
+
+  if(budget<=0){ resultEl.innerHTML = `<div class="error-msg">Please enter a valid total budget to generate a plan.</div>`; return; }
+
+  const split = {stay:0.38, food:0.27, transport:0.15, activities:0.13, buffer:0.07};
+  const c = getCity(place);
+  let pick = c.stay[1];
+  if(style==='budget') pick = c.stay[0];
+  if(style==='luxury') pick = c.stay[2];
+  let foodPick = style==='luxury' ? c.food[c.food.length-1] : c.food[0];
+
+  const perPersonPerDay = Math.round(budget/(days*people));
+  let tier = "tight";
+  if(perPersonPerDay>3000) tier="comfortable";
+  if(perPersonPerDay>7000) tier="generous";
+
+  resultEl.innerHTML = `
+    <div class="card" style="margin-bottom:18px;">
+      <h3 style="margin-bottom:6px;">Your plan for ${place}</h3>
+      <p style="color:var(--ink-soft);font-size:14px;margin-bottom:18px;">≈ ₹${perPersonPerDay.toLocaleString()} per person, per day — that's a <b>${tier}</b> budget for ${days} day(s) with ${people} traveller(s).</p>
+      ${Object.entries(split).map(([k,v])=>{
+        const amt = Math.round(budget*v);
+        const labels = {stay:'🛏️ Stay', food:'🍴 Food', transport:'🚕 Local transport', activities:'🎟️ Activities & entry fees', buffer:'💰 Buffer / shopping'};
+        const colors = {stay:'var(--sky)', food:'var(--peach)', transport:'var(--lavender)', activities:'var(--sage)', buffer:'#FFE9A8'};
+        return `<div class="bar-row"><div class="lbl"><span>${labels[k]}</span><span>₹${amt.toLocaleString()}</span></div><div class="bar-track"><div class="bar-fill" style="width:${v*100}%;background:${colors[k]};"></div></div></div>`;
+      }).join('')}
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <h4 style="margin-bottom:12px;">Our recommendation</h4>
+        <div class="list-item"><div class="ic">🛏️</div><div><h4>Stay at ${pick.n}</h4><p>${pick.d} <br>Around ${pick.price}, fits your ${style} style.</p></div></div>
+        <div class="list-item"><div class="ic">🍴</div><div><h4>Eat at ${foodPick.n}</h4><p>${foodPick.d} <br>Approx. ${foodPick.price}.</p></div></div>
+        <div class="list-item"><div class="ic">📍</div><div><h4>Don't miss ${c.attractions[0].n}</h4><p>${c.attractions[0].d}</p></div></div>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom:12px;">Carry these for your trip</h4>
+        ${c.packing.slice(0,6).map(p=>`<div class="list-item" style="border:none;padding:8px 0;"><div class="ic" style="width:30px;height:30px;font-size:14px;background:var(--sage);">✓</div><p style="font-size:14px;">${p}</p></div>`).join('')}
+        <button class="btn btn-ghost btn-sm" style="margin-top:8px;" onclick="openCity('${c.name}')">See full guide for ${c.name} →</button>
+      </div>
+    </div>
+  `;
+}
+
+/* ================= JOURNAL ================= */
+let pendingPhotos = [];
+
+function renderJournal(){
+  const entries = [...state.journal].sort((a,b)=>b.id-a.id);
+  return `
+  ${topNav('journal')}
+  <div class="page"><div class="wrap">
+    <h1 style="font-size:30px;margin-bottom:6px;">Travel Journal</h1>
+    <p style="color:var(--ink-soft);margin-bottom:24px;">Capture memories from each trip — write about it and add photos.</p>
+
+    <div class="card" style="margin-bottom:28px;">
+      <h3 style="margin-bottom:14px;">New entry</h3>
+      <div class="field"><label>Place</label><input id="j-place" type="text" placeholder="e.g. Udupi" value="${state.journalDraftPlace||''}"/></div>
+      <div class="field"><label>Date</label><input id="j-date" type="date"/></div>
+      <div class="field"><label>Your story</label><textarea id="j-text" class="field-input" placeholder="Visited Malpe beach, took a boat to St. Mary's Island, the rocks were incredible..."></textarea></div>
+      <div class="field">
+        <label>Photos</label>
+        <input id="j-photo" type="file" accept="image/*" multiple onchange="handlePhotoSelect(event)"/>
+        <div id="photo-preview" class="journal-photos"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addJournalEntry()">Save entry</button>
+    </div>
+
+    <h3 class="section-title" style="margin-top:0;">Your memories (${entries.length})</h3>
+    ${entries.length===0 ? `<div class="empty"><div class="e-icon">📔</div><p>No journal entries yet. Your first memory is one trip away.</p></div>` :
+      entries.map(e=>`
+      <div class="journal-entry">
+        <div class="top">
+          <div><h4 style="font-size:17px;">📍 ${e.place}</h4><div class="date">${e.date||'No date'}</div></div>
+          <button class="btn btn-ghost btn-sm" onclick="deleteJournal(${e.id})">Delete</button>
+        </div>
+        <p style="font-size:14.5px;margin-top:10px;line-height:1.6;color:var(--ink);">${e.text}</p>
+        ${e.photos.length?`<div class="journal-photos">${e.photos.map(p=>`<img src="${p}"/>`).join('')}</div>`:''}
+      </div>`).join('')}
+  </div></div>
+  <footer>WanderWise — plan less, wander more 🌿</footer>`;
+}
+
+function handlePhotoSelect(ev){
+  const files = Array.from(ev.target.files).slice(0,6);
+  pendingPhotos = [];
+  const preview = document.getElementById('photo-preview');
+  preview.innerHTML = '';
+  files.forEach(f=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      pendingPhotos.push(e.target.result);
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+function addJournalEntry(){
+  const place = document.getElementById('j-place').value.trim();
+  const date = document.getElementById('j-date').value;
+  const text = document.getElementById('j-text').value.trim();
+  if(!place || !text){ alert('Please add a place and your story before saving.'); return; }
+  const entry = {id:Date.now(), place, date, text, photos:[...pendingPhotos]};
+  pendingPhotos = [];
+  setState({journal:[...state.journal, entry], journalDraftPlace:''});
+}
+
+function deleteJournal(id){
+  setState({journal: state.journal.filter(e=>e.id!==id)});
+}
+
+/* ================= PROFILE ================= */
+function renderProfile(){
+  const u = state.user;
+  const tripCount = state.journal.length;
+  const placesVisited = new Set(state.journal.map(e=>e.place.toLowerCase())).size;
+  const photoCount = state.journal.reduce((s,e)=>s+e.photos.length,0);
+  return `
+  ${topNav('profile')}
+  <div class="page"><div class="wrap">
+    <div class="profile-head">
+      <div class="profile-avatar">${initials(u.name)}</div>
+      <div>
+        <h1 style="font-size:26px;">${u.name}</h1>
+        <p style="color:var(--ink-soft);font-size:14px;">${u.email}</p>
+        <div class="stat-row">
+          <div class="stat"><div class="n">${placesVisited}</div><div class="l">PLACES LOGGED</div></div>
+          <div class="stat"><div class="n">${tripCount}</div><div class="l">JOURNAL ENTRIES</div></div>
+          <div class="stat"><div class="n">${photoCount}</div><div class="l">PHOTOS</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3 style="margin-bottom:14px;">Recent journal activity</h3>
+        ${state.journal.length===0 ? `<div class="empty"><div class="e-icon">🧳</div><p>Nothing logged yet — start by exploring a destination.</p></div>` :
+        [...state.journal].sort((a,b)=>b.id-a.id).slice(0,4).map(e=>`
+          <div class="list-item"><div class="ic">📍</div><div><h4>${e.place}</h4><p>${e.text.slice(0,80)}${e.text.length>80?'…':''}</p></div></div>
+        `).join('')}
+        <button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="nav('journal')">Go to journal →</button>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:14px;">Preferences</h3>
+        <div class="field"><label>Travel style</label>
+          <select style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);">
+            <option>Budget / Backpacker</option><option selected>Mid-range / Comfort</option><option>Luxury</option>
+          </select>
+        </div>
+        <div class="field"><label>Favourite trip type</label>
+          <select style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);">
+            <option>Beaches</option><option>Mountains</option><option>Heritage & Culture</option><option>Food Trails</option>
+          </select>
+        </div>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-top:10px;">Preferences are saved for this session and help tailor future suggestions.</p>
+      </div>
+    </div>
+  </div></div>
+  <footer>WanderWise — plan less, wander more 🌿</footer>`;
+}
+
+/* ================= ROUTER / RENDER ================= */
+function render(){
+  const root = document.getElementById('root');
+  let html = '';
+  if(!state.user){
+    if(state.page==='signup') html = renderSignup();
+    else if(state.page==='forgot') html = renderForgot();
+    else html = renderLogin();
+  } else {
+    if(state.page==='destination' && state.currentCity) html = renderDestination();
+    else if(state.page==='planner') html = renderPlanner();
+    else if(state.page==='journal') html = renderJournal();
+    else if(state.page==='profile') html = renderProfile();
+    else html = renderHome();
+  }
+  root.innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>
